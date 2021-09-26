@@ -63,4 +63,5 @@ export {
   terms,
   meetsPat,
   toggle,
+  timeParts,
 };
