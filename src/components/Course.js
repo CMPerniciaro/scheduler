@@ -1,10 +1,10 @@
 import React from "react";
-import { getCourseTerm, hasConflict } from "../utilities/times";
-
-const toggle = (x, lst) =>
-  lst.includes(x) ? lst.filter((y) => y !== x) : [x, ...lst];
-
-const getCourseNumber = (course) => course.id.slice(1, 4);
+import {
+  getCourseTerm,
+  hasConflict,
+  toggle,
+  getCourseNumber,
+} from "../utilities/times";
 
 const Course = ({ course, selected, setSelected }) => {
   const isSelected = selected.includes(course);
