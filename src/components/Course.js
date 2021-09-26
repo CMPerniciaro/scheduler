@@ -1,20 +1,12 @@
 import React from "react";
+import { setData, useUserState } from "../utilities/firebase";
 import {
+  getCourseMeetingData,
+  getCourseNumber,
   getCourseTerm,
   hasConflict,
   toggle,
-  getCourseNumber,
-  timeParts,
 } from "../utilities/times";
-import { setData } from "../utilities/firebase";
-
-const getCourseMeetingData = (course) => {
-  const meets = prompt("Enter meeting data: MTuWThF hh:mm-hh:mm", course.meets);
-  const valid = !meets || timeParts(meets).days;
-  if (valid) return meets;
-  alert("Invalid meeting data");
-  return null;
-};
 
 const reschedule = async (course, meets) => {
   if (meets && window.confirm(`Change ${course.id} to ${meets}?`)) {
@@ -29,6 +21,7 @@ const reschedule = async (course, meets) => {
 const Course = ({ course, selected, setSelected }) => {
   const isSelected = selected.includes(course);
   const isDisabled = !isSelected && hasConflict(course, selected);
+  const [user] = useUserState();
 
   const style = {
     backgroundColor: isDisabled
@@ -42,7 +35,9 @@ const Course = ({ course, selected, setSelected }) => {
       className="card m-1 p-2"
       style={style}
       onClick={isDisabled ? null : () => setSelected(toggle(course, selected))}
-      onDoubleClick={() => reschedule(course, getCourseMeetingData(course))}
+      onDoubleClick={
+        !user ? null : () => reschedule(course, getCourseMeetingData(course))
+      }
     >
       <div className="card-body">
         <div className="card-title">
